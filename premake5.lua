@@ -1,5 +1,5 @@
-worspace "Engine"
-	architecture "x64"
+workspace "Engine"
+	architecture "x86_64"
 
 	configurations
 	{
@@ -9,6 +9,7 @@ worspace "Engine"
 	}
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+
 
 project "Engine"
 	location "Engine"
@@ -24,7 +25,7 @@ project "Engine"
 		"%{prj.name}/src/**.cpp"
 	}
 
-	include 
+	includedirs
 	{
 		"%{prj.name}/vendor/spdlog/include"
 	}
@@ -40,10 +41,10 @@ project "Engine"
 			"ENGINE_BUILD_DLL"
 		}
 
-		postbuildcommands
-		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
-		}
+	postbuildcommands 
+	{
+		("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
+	}
 
 
 	filter "configurations:Debug"
@@ -73,9 +74,9 @@ project "Sandbox"
 		"%{prj.name}/src/**.cpp"
 	}
 
-	include 
+	includedirs
 	{
-		"%{prj.name}/vendor/spdlog/include",
+		"Engine/vendor/spdlog/include",
 		"Engine/src"
 	}
 
@@ -105,3 +106,4 @@ project "Sandbox"
 	filter "configurations:Dist"
 		defines "ENGINE_DIST"
 		optimize "On"
+
